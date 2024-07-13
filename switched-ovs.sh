@@ -1,4 +1,4 @@
-#!bin/bash
+#!/bin/bash
 
 echo "--- Create an OVS switch"
 ovs-vsctl add-br br1
@@ -94,17 +94,17 @@ echo "--- OVS show ---"
 ovs-vsctl show
 
 echo "--- Creating link between switches..."
-ip link add br1-trunk type veth peer name br1-b3-trunk
+ip link add br1-trunk type veth peer name br1-br3-trunk
 ip link add br2-trunk type veth peer name br2-br3-trunk
-ip link add br3-router-trunk type veth peer name router-trunk
+ip link add br3-r-trunk type veth peer name router-trunk
 sleep 1
 
 echo "--- Add trunk port to switches..."
 ovs-vsctl add-port br1 br1-trunk
-ovs-vsctl add-port br3 br1-b3-trunk
-ovs-vsctl add-port br3 br2-b3-trunk
+ovs-vsctl add-port br3 br1-br3-trunk
+ovs-vsctl add-port br3 br2-br3-trunk
 ovs-vsctl add-port br2 br2-trunk
-ovs-vsctl add-port br3 br3-router-trunk
+ovs-vsctl add-port br3 br3-r-trunk
 sleep 1
 
 echo "--- Turning up trunk interfaces..."
