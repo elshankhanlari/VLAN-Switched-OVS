@@ -1,9 +1,18 @@
 #!/bin/bash
 
+echo "---Deleteing ovs bridges..."
+ovs-vsctl del-br br1
+ovs-vsctl del-br br2
+ovs-vsctl del-br br3
+sleep1
+
 echo "---Setting up environment..."
-iptables -F
-iptables -t nat -F
-iptables -X
 ip route flush table main
 systemctl restart networking
 systemctl restart openvswitch-switch
+sleep1
+
+echo "---echo Verify Clean Environment..."
+ifconfig
+ovs-vsctl show
+ip addr show
