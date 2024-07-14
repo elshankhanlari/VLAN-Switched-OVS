@@ -9,7 +9,7 @@ echo "--- Show OVS bridges"
 
 ovs-vsctl show
 
-echo "--- Activate the OVS switch named lab2-br1..."
+echo "--- Activate the OVS switches..."
 
 ifconfig br1 up
 ifconfig br2 up
@@ -17,7 +17,7 @@ ifconfig br3 up
 
 echo "--- Add interface to the OVS..."
 
-ovs-vsctl add-port br2 enp0s3
+ovs-vsctl add-port br3 enp0s3
 
 ovs-vsctl show
 
@@ -93,12 +93,12 @@ ip -n router link set veth-router-200 up
 sleep 1
 
 echo "Turning up the interfaces within default namespace..."
-sudo ip link set veth-yellow1-br up
-sudo ip link set veth-green1-br up
-sudo ip link set veth-yellow2-br up
-sudo ip link set veth-green2-br up
-sudo ip link set veth-r-br-100 up
-sudo ip link set veth-r-br-200 up
+ip link set veth-yellow1-br up
+ip link set veth-green1-br up
+ip link set veth-yellow2-br up
+ip link set veth-green2-br up
+ip link set veth-r-br-100 up
+ip link set veth-r-br-200 up
 echo "--- OVS show ---"
 
 ovs-vsctl show
@@ -134,7 +134,7 @@ ovs-vsctl set port br2-br3-trunk trunks=100,200
 echo "Enable routing ..."
 ip netns exec router ip addr add 192.168.100.1/24 dev veth-router-100
 ip netns exec router ip addr add 192.168.200.1/24 dev veth-router-200
-sudo ip netns exec router sysctl -w net.ipv4.ip_forward=1
+ip netns exec router sysctl -w net.ipv4.ip_forward=1
 
 echo "--- Show OVS..."
 ovs-vsctl show
