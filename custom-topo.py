@@ -57,8 +57,8 @@ def run():
     net.start()
 
     # Add routing for reaching networks that aren't directly connected
-    info(router.cmd("ip route add 192.168.200.0/24 dev router-eth0"))
-    info(router.cmd("ip route add 192.168.100.0/24 dev router-eth0"))
+    info(router.cmd("ip route add 192.168.200.1/24 dev router-eth0"))
+    info(router.cmd("ip route add 192.168.100.1/24 dev router-eth0"))
 
     CLI(net)
     net.stop()
