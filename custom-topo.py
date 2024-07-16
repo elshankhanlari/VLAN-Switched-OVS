@@ -46,7 +46,7 @@ class CustomTopo(Topo):
 
 def run():
     topo = CustomTopo()
-    net = Mininet(topo=topo, controller=None, link=TCLink, switch=OVSKernelSwitch)
+    net = Mininet(topo=topo, controller=None, link=TCLink)
     net.addController(RemoteController('c0', ip='127.0.0.1', port=6633))
 
     # Configure router with two IP addresses for inter-VLAN routing
