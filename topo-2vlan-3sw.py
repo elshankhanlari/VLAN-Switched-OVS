@@ -66,11 +66,6 @@ def run():
     net = Mininet(topo=topo, controller=None)
     net.addController(RemoteController('c0', ip='172.17.0.2'))
 
-    # Configure router with two IP addresses for inter-VLAN routing
-    router = net.get('router')
-    router.cmd('ifconfig router-eth0 192.168.100.1/24')
-    router.cmd('ifconfig router-eth0 add 192.168.200.1/24')
-
     net.start()
     CLI(net)
     net.stop()
