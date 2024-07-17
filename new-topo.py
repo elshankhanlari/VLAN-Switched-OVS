@@ -24,7 +24,7 @@ class CustomTopo(Topo):
         s2 = self.addSwitch('s2')  # Rightmost switch
 
         # Add router
-        router = self.addHost('router', cls=LinuxRouter)
+        router = self.addHost('r', cls=LinuxRouter)
 
         # Add links between switches
         self.addLink(s1, s3)
@@ -51,8 +51,8 @@ class CustomTopo(Topo):
         router.cmd('ovs-vsctl add-port router-eth0 router-eth0.100 tag=100')
         router.cmd('ifconfig router-eth0.100 192.168.100.1/24')
 
-        router.cmd('ovs-vsctl add-port router-eth1 router-eth1.200 tag=200')
-        router.cmd('ifconfig router-eth1.200 192.168.200.1/24')
+        info(net['router'].cmd('ovs-vsctl add-port router-eth1 router-eth1.200 tag=200'))
+        info(net['router'].cmd('ifconfig router-eth1.200 192.168.200.1/24'))
 
 
 def run():
@@ -61,15 +61,6 @@ def run():
     net.addController(RemoteController('c0', ip='172.17.0.2'))
 
     net.start()
-
-    # Enable IP forwarding on the router
-    router = net.get('router')
-    router.cmd('sysctl net.ipv4.ip_forward=1')
-
-    # Test connectivity
-    net.get('h1').cmd('ping -c1 192.168.100.3')
-    net.get('h1').cmd('ping -c1 192.168.200.3')
-
     CLI(net)
     net.stop()
 
