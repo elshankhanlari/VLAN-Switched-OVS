@@ -60,7 +60,9 @@ def run():
     router.cmd('ifconfig router-eth0.100 192.168.100.1/24')
     router.cmd('ifconfig router-eth0.200 192.168.200.1/24')
 
-    # No need to add static routes manually as the router will handle the routing based on the IP configurations
+    # Add routing for reaching networks that aren't directly connected
+    info(router.cmd("ip route add 192.168.100.0/24 dev router-eth0.100"))
+    info(router.cmd("ip route add 192.168.200.0/24 dev router-eth0.200"))
 
     CLI(net)
     net.stop()
