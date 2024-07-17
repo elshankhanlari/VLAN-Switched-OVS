@@ -44,11 +44,6 @@ class CustomTopo(Topo):
         self.addLink(h3, s2, intfName1='br2-eth3')
         self.addLink(h4, s2, intfName1='br2-eth4')
 
-        # Configure trunk behaviour
-        s1.cmd('ovs-vsctl set Port br1-trunk tag=[]')
-        s1.cmd('ovs-vsctl set Port br2-trunk tag=[]')
-        s2.cmd('ovs-vsctl set Port br2-eth3 tag=[]')
-        s2.cmd('ovs-vsctl set Port br2-eth4 tag=[]')
 
 
 def run():
@@ -57,6 +52,14 @@ def run():
     net.addController(RemoteController('c0', ip='172.17.0.2'))
 
     net.start()
+
+    s1 = net.get('s1')
+    s2 = net.get('s2')
+    # Configure trunk behaviour
+    s1.cmd('ovs-vsctl set Port br1-trunk tag=[]')
+    s1.cmd('ovs-vsctl set Port br2-trunk tag=[]')
+    s2.cmd('ovs-vsctl set Port br2-eth3 tag=[]')
+    s2.cmd('ovs-vsctl set Port br2-eth4 tag=[]')
 
     # Configure router with sub-interfaces for VLANs
     router = net.get('router')
