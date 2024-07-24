@@ -38,10 +38,17 @@ class CustomTopo(Topo):
         self.addLink(router, middle_switch, intfName1='router-eth0.200')
 
         # Add hosts and assign them to VLANs
-        for i in range(1, middle_switch_index + 1):
+        for i in range(1, middle_switch_index):
             vlan_id = 100 if i % 2 == 1 else 200
-            host1 = self.addHost(f'h{2*i}', ip=f'192.168.{vlan_id}.{i + 1}/24', defaultRoute=f'via 192.168.{vlan_id}.1')
-            host2 = self.addHost(f'h{2*i+1}', ip=f'192.168.{vlan_id}.{i + 2}/24', defaultRoute=f'via 192.168.{vlan_id}.1')
+            host1 = self.addHost(f'h{2*i-1}', ip=f'192.168.{vlan_id}.{2*i-1}/24', defaultRoute=f'via 192.168.{vlan_id}.1')
+            host2 = self.addHost(f'h{2*i}', ip=f'192.168.{vlan_id}.{2*i}/24', defaultRoute=f'via 192.168.{vlan_id}.1')
+            self.addLink(host1, switches[i - 1], intfName1=f'br{i}-eth1')
+            self.addLink(host2, switches[i - 1], intfName1=f'br{i}-eth2')
+
+        for i in range(middle_switch_index +1 , num_switches + 1):
+            vlan_id = 100 if i % 2 == 1 else 200
+            host1 = self.addHost(f'h{2*i-1}', ip=f'192.168.{vlan_id}.{2*i-1}/24', defaultRoute=f'via 192.168.{vlan_id}.1')
+            host2 = self.addHost(f'h{2*i}', ip=f'192.168.{vlan_id}.{2*i}/24', defaultRoute=f'via 192.168.{vlan_id}.1')
             self.addLink(host1, switches[i - 1], intfName1=f'br{i}-eth1')
             self.addLink(host2, switches[i - 1], intfName1=f'br{i}-eth2')
 
