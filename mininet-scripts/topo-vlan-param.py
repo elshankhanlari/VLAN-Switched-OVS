@@ -40,14 +40,14 @@ class CustomTopo(Topo):
 
         # Add hosts and assign them to VLANs
         for i in range(1, middle_switch_index + 1):
-            host1 = self.addHost(f'h{2*i-1}', ip=f'192.168.{100}.{2*i-1}/24', defaultRoute=f'via 192.168.{100}.0')
-            host2 = self.addHost(f'h{2*i}', ip=f'192.168.{200}.{2*i}/24', defaultRoute=f'via 192.168.{200}.0')
+            host1 = self.addHost(f'h{2*i-1}', ip=f'192.168.{100}.{2*i}/24', defaultRoute=f'via 192.168.{100}.1')
+            host2 = self.addHost(f'h{2*i}', ip=f'192.168.{200}.{2*i}/24', defaultRoute=f'via 192.168.{200}.1')
             self.addLink(host1, switches[i - 1], intfName1=f'br{i}-eth1')
             self.addLink(host2, switches[i - 1], intfName1=f'br{i}-eth2')
 
         for i in range(middle_switch_index + 2 , num_switches + 1):
-            host1 = self.addHost(f'h{(2*i-1) - 2}', ip=f'192.168.{100}.{(2*i-1) - 2}/24', defaultRoute=f'via 192.168.{100}.0')
-            host2 = self.addHost(f'h{(2*i) - 2}', ip=f'192.168.{200}.{(2*i) - 2}/24', defaultRoute=f'via 192.168.{200}.0')
+            host1 = self.addHost(f'h{(2*i-1) - 2}', ip=f'192.168.{100}.{(2*i) - 2}/24', defaultRoute=f'via 192.168.{100}.1')
+            host2 = self.addHost(f'h{(2*i) - 2}', ip=f'192.168.{200}.{(2*i) - 2}/24', defaultRoute=f'via 192.168.{200}.1')
             self.addLink(host1, switches[i - 1], intfName1=f'br{i}-eth1')
             self.addLink(host2, switches[i - 1], intfName1=f'br{i}-eth2')
 
@@ -73,12 +73,12 @@ def run(num_switches=3):
     router.cmd('ip link add link router-eth0 name router-eth0.200 type vlan id 200')
     router.cmd('ifconfig router-eth0.100 up')
     router.cmd('ifconfig router-eth0.200 up')
-    router.cmd('ifconfig router-eth0.100 192.168.100.0/24')
-    router.cmd('ifconfig router-eth0.200 192.168.200.0/24')
+    router.cmd('ifconfig router-eth0.100 192.168.100.1/24')
+    router.cmd('ifconfig router-eth0.200 192.168.200.1/24')
 
     # Add routing for reaching networks that aren't directly connected
-    info(router.cmd("ip route add 192.168.100.0/24 dev router-eth0.100"))
-    info(router.cmd("ip route add 192.168.200.0/24 dev router-eth0.200"))
+    info(router.cmd("ip route add 192.168.100.1/24 dev router-eth0.100"))
+    info(router.cmd("ip route add 192.168.200.1/24 dev router-eth0.200"))
 
     CLI(net)
     net.stop()
