@@ -4,6 +4,7 @@ from mininet.node import RemoteController, Node
 from mininet.cli import CLI
 from mininet.link import TCLink
 from mininet.log import setLogLevel, info
+import argparse
 
 
 class LinuxRouter(Node):
@@ -87,5 +88,8 @@ def run(num_switches=3):
 
 if __name__ == '__main__':
     setLogLevel('info')
-    num_switches = 3  # Default number of switches, change this value as needed
-    run(num_switches)
+    parser = argparse.ArgumentParser(description='Mininet custom topology script.')
+    parser.add_argument('--num-switches', type=int, default=3, help='Number of switches in the topology')
+    args = parser.parse_args()
+
+    run(num_switches=args.num_switches)
