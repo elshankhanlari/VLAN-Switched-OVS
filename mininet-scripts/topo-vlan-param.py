@@ -41,10 +41,10 @@ class CustomTopo(Topo):
         # Add hosts and assign them to VLANs
         for i in range(1, num_switches + 1):
             vlan_id = 100 if i % 2 == 1 else 200
-            for j in range(1, num_host):
-                host = self.addHost(f'h{j}', ip=f'192.168.{vlan_id}.{i + 1}/24', defaultRoute=f'via 192.168.{vlan_id}.1')
-                host = self.addHost(f'h{j+1}', ip=f'192.168.{vlan_id}.{i + 1}/24', defaultRoute=f'via 192.168.{vlan_id}.1')
-                self.addLink(host, switches[i - 1], intfName1=f'br{i}-eth1')
+        for j in range(1, num_host):
+            host = self.addHost(f'h{j}', ip=f'192.168.{vlan_id}.{i + 1}/24', defaultRoute=f'via 192.168.{vlan_id}.1')
+            host = self.addHost(f'h{j+1}', ip=f'192.168.{vlan_id}.{i + 1}/24', defaultRoute=f'via 192.168.{vlan_id}.1')
+            self.addLink(host, switches[i - 1], intfName1=f'br{i}-eth1')
 
 
 def run(num_switches=3):
