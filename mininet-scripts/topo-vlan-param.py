@@ -5,6 +5,7 @@ from mininet.cli import CLI
 from mininet.link import TCLink
 from mininet.log import setLogLevel, info
 
+
 class LinuxRouter(Node):
     def config(self, **params):
         super(LinuxRouter, self).config(**params)
@@ -14,14 +15,15 @@ class LinuxRouter(Node):
         self.cmd('sysctl net.ipv4.ip_forward=0')
         super(LinuxRouter, self).terminate()
 
+
 class CustomTopo(Topo):
     def build(self, num_switches=3, **_opts):
         if num_switches < 3:
             raise ValueError("The number of switches must be at least 3.")
 
         # Add switches
-        switches = [self.addSwitch(f's{i+1}') for i in range(num_switches)]
-        
+        switches = [self.addSwitch(f's{i + 1}') for i in range(num_switches)]
+
         # Add router
         router = self.addHost('router', cls=LinuxRouter)
 
@@ -35,11 +37,15 @@ class CustomTopo(Topo):
         self.addLink(router, middle_switch, intfName1='router-eth0.100')
         self.addLink(router, middle_switch, intfName1='router-eth0.200')
 
+        num_host = 2
         # Add hosts and assign them to VLANs
         for i in range(1, num_switches + 1):
             vlan_id = 100 if i % 2 == 1 else 200
-            host = self.addHost(f'h{i}', ip=f'192.168.{vlan_id}.{i+1}/24', defaultRoute=f'via 192.168.{vlan_id}.1')
-            self.addLink(host, switches[i - 1], intfName1=f'br{i}-eth1')
+            for j in range(1, num_host):
+                host = self.addHost(f'h{j}', ip=f'192.168.{vlan_id}.{i + 1}/24', defaultRoute=f'via 192.168.{vlan_id}.1')
+                host = self.addHost(f'h{j+1}', ip=f'192.168.{vlan_id}.{i + 1}/24', defaultRoute=f'via 192.168.{vlan_id}.1')
+                self.addLink(host, switches[i - 1], intfName1=f'br{i}-eth1')
+
 
 def run(num_switches=3):
     topo = CustomTopo(num_switches=num_switches)
@@ -50,11 +56,11 @@ def run(num_switches=3):
 
     middle_switch_index = num_switches // 2
     middle_switch = net.get(f's{middle_switch_index + 1}')
-    
+
     # Configure trunk behaviour
     for i in range(num_switches):
         if i < num_switches - 1:
-            net.get(f's{i+1}').cmd(f'ovs-vsctl set Port s{i+1}-eth{i+2} tag=[]')
+            net.get(f's{i + 1}').cmd(f'ovs-vsctl set Port s{i + 1}-eth{i + 2} tag=[]')
 
     # Configure router with sub-interfaces for VLANs
     router = net.get('router')
@@ -71,6 +77,7 @@ def run(num_switches=3):
 
     CLI(net)
     net.stop()
+
 
 if __name__ == '__main__':
     setLogLevel('info')
