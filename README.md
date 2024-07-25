@@ -49,7 +49,3 @@ This configuration enables us to explore and demonstrate practical aspects of ne
 
 ### Image 2: ONOS Web-GUI
 ![ONOS Web-GUI](assets/ONOS_GUI_visualisation.png)
-=======
-
-[README.md](https://github.com/user-attachments/files/16368619/README.md)
->>>>>>> origin/main
