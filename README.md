@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Network Configuration Description
 
 The Python script utilizes the Mininet library to create a custom network topology simulating VLANs and a router. The topology consists of three switches (s1, s2, s3) and a Linux-based router (router). Hosts are connected to switches and VLANs are configured to facilitate inter-VLAN routing.
@@ -48,3 +49,8 @@ This configuration enables us to explore and demonstrate practical aspects of ne
 
 ### Image 2: ONOS Web-GUI
 ![ONOS Web-GUI](assets/ONOS_GUI_visualisation.png)
+=======
+
+
+[README.md](https://github.com/user-attachments/files/16373117/README.md)
+>>>>>>> 50c2c46 (Update README.md)
