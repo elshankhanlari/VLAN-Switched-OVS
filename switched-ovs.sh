@@ -145,8 +145,5 @@ ip netns exec green1 ip route add default via 192.168.200.1
 ip netns exec yellow2 ip route add default via 192.168.100.1
 ip netns exec green2 ip route add default via 192.168.200.1
 
-echo "--- Ping All..."
-pingall
-
 echo "--- Show OVS..."
 ovs-vsctl show
