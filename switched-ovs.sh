@@ -45,8 +45,6 @@ ip link add veth-yellow1 type veth peer name veth-yellow1-br
 ip link add veth-green1 type veth peer name veth-green1-br
 ip link add veth-yellow2 type veth peer name veth-yellow2-br
 ip link add veth-green2 type veth peer name veth-green2-br
-ip link add veth-router-100 type veth peer name veth-r-br-100
-ip link add veth-router-200 type veth peer name veth-r-br-200
 sleep 1
 
 echo "Moving interfaces into the namespaces"
@@ -54,8 +52,6 @@ ip link set veth-yellow1 netns yellow1
 ip link set veth-green1 netns green1
 ip link set veth-yellow2 netns yellow2
 ip link set veth-green2 netns green2
-ip link set veth-router-100 netns router
-ip link set veth-router-200 netns router
 sleep 1
 
 echo "---> Attaching interfaces to ovs-switch"
@@ -132,6 +128,8 @@ ovs-vsctl set port br1-br3-trunk trunks=100,200
 ovs-vsctl set port br2-br3-trunk trunks=100,200
 
 echo "Enable routing ..."
+ip netns exec router ip addr add 192.168.100.1/24 dev veth-router-100
+ip netns exec router ip addr add 192.168.200.1/24 dev veth-router-200
 ip netns exec router sysctl -w net.ipv4.ip_forward=1
 
 echo "--- Show OVS..."
