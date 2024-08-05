@@ -132,8 +132,6 @@ ovs-vsctl set port br1-br3-trunk trunks=100,200
 ovs-vsctl set port br2-br3-trunk trunks=100,200
 
 echo "Enable routing ..."
-ip netns exec router ip addr add 192.168.100.1/24 dev veth-router-100
-ip netns exec router ip addr add 192.168.200.1/24 dev veth-router-200
 ip netns exec router sysctl -w net.ipv4.ip_forward=1
 
 echo "--- Show OVS..."
